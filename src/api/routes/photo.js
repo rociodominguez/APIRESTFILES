@@ -4,9 +4,9 @@ const { getPhotos, postPhoto, deletePhoto, updatePhoto } = require("../controlle
 
 const photosRouter = require("express").Router();
 
-photosRouter.put("/:id", [isAuth], [isAdmin], updatePhoto)
-photosRouter.delete("/:id", [isAuth], [isAdmin], deletePhoto);
-photosRouter.post("/", upload.single("img"), [isAuth], postPhoto);
+photosRouter.put("/:id", [isAdmin], updatePhoto)
+photosRouter.delete("/:id", [isAdmin], deletePhoto);
+photosRouter.post("/", [isAuth], upload.single("img"), postPhoto);
 photosRouter.get("/", getPhotos);
 
 module.exports = photosRouter;

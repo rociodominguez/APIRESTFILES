@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 const photoSchema = new Schema(
   {
     img: { type: String, required: true },
-    photographer: { type: String, required: true },
+    photographer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "photographers"
+    },
     title: { type: String, required: false },
     year: { type: Number }
   },

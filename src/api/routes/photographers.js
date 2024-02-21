@@ -4,9 +4,9 @@ const { updatePhotographer, deletePhotographer, getPhotographers, postPhotograph
 
 const photographersRoutes = require("express").Router();
 
-photographersRoutes.put("/:id", [isAuth], [isAdmin], updatePhotographer)
-photographersRoutes.delete("/:id", [isAuth], [isAdmin], deletePhotographer);
-photographersRoutes.post("/", upload.single("img"), [isAuth], postPhotographer);
+photographersRoutes.put("/:id", [isAdmin], updatePhotographer)
+photographersRoutes.delete("/:id", [isAdmin], deletePhotographer);
+photographersRoutes.post("/", [isAuth], upload.single("img"), postPhotographer);
 photographersRoutes.get("/", getPhotographers);
 
 module.exports = photographersRoutes;

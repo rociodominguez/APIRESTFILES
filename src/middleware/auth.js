@@ -1,46 +1,39 @@
 const User = require("../api/models/user");
 const { verifyJwt } = require("../config/jwt");
 
-const isAuth = async (req, res, next) => {
+const verifying = (checking) => async (req, res, next) => {
     try {
         const token = req.headers.authorization;
 
         if (!token) {
-            return res.status(400).json("No autorizado ✋")
+            return res.status(400).json("No autorizado ✋");
         }
 
         const parsedToken = token.replace("Bearer ", "");
         const { id } = verifyJwt(parsedToken);
 
         const user = await User.findById(id);
-        req.password = null;
-        req.user = user;
-        next();
+        const checked = await checking(user);
 
-    } catch (error) {
-        return res.status(400).json("Error en el token")
-    }
-}
-
-const isAdmin = async (req, res, next) => {
-    try {
-        const token = req.headers.authorization;
-
-        const parsedToken = token.replace("Bearer ", "");
-        const { id } = verifyJwt(parsedToken);
-        const user = await User.findById(id);
-
-        if(user.rol === "admin") {
+        if (checked) {
             req.password = null;
             req.user = user;
             next();
         } else {
-            return res.status(400).json("Solo admins ❌")
+            return res.status(400).json("Acceso no permitido ❌");
         }
 
     } catch (error) {
-        return res.status(400).json("Error en el token")
+        return res.status(400).json("Error en el token");
     }
-}
+};
 
-module.exports = { isAuth, isAdmin }
+const isAuth = verifying(async (user) => {
+    return user !== null;
+});
+
+const isAdmin = verifying(async (user) => {
+    return user && user.rol === "admin";
+});
+
+module.exports = { isAuth, isAdmin };

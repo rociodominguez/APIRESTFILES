@@ -1,0 +1,8 @@
+Para obtener usuarios:
+http://localhost:3000/api/v1/users
+
+Para obtener fotografías:
+http://localhost:3000/api/v1/photos
+
+Para obtener fotógrafos:
+http://localhost:3000/api/v1/photographers
